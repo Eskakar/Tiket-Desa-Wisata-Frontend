@@ -1,4 +1,7 @@
+import { useNavigate } from 'react-router-dom'
+
 export default function WisataCard({ wisata }) {
+  const navigate = useNavigate()
   return (
     <div className='overflow-hidden rounded-3xl bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl'>
       {/* IMAGE */}
@@ -48,7 +51,11 @@ export default function WisataCard({ wisata }) {
             </h4>
           </div>
 
-          <button className='rounded-xl bg-emerald-600 px-4 py-2 font-medium text-white transition hover:bg-emerald-700'>
+          <button className='rounded-xl bg-emerald-600 px-4 py-2 font-medium text-white transition hover:bg-emerald-700'
+            onClick={() =>
+              navigate(`/wisata/${wisata.slug}`)
+            }
+          >
             Detail
           </button>
         </div>

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Navbar from '../../components/navbar/Navbar'
 import WisataCard from '../../components/cards/WisataCard'
+import CategoryCard from '../../components/cards/CategoryCard'
 
 import { getFeaturedWisata } from '../../services/wisataService'
 
@@ -145,12 +146,10 @@ export default function LandingPage() {
 
         <div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6'>
           {categories.map((category) => (
-            <button
+            <CategoryCard
               key={category}
-              className='rounded-2xl border border-slate-200 bg-white px-4 py-5 font-medium text-slate-700 shadow-sm transition hover:-translate-y-1 hover:border-emerald-500 hover:text-emerald-700 hover:shadow-lg'
-            >
-              {category}
-            </button>
+              category={category}
+            />
           ))}
         </div>
       </section>
