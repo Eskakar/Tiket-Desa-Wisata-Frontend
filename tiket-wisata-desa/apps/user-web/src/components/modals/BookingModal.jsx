@@ -43,6 +43,9 @@ export default function BookingModal({
       )
 
       onClose()
+      navigate(
+        `/payments/${response.data.bookingId}`
+      )
     } catch (error) {
       console.error(error)
 

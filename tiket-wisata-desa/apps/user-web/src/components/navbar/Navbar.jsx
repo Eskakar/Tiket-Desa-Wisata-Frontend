@@ -1,12 +1,14 @@
 import { Link,useLocation, useNavigate} from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
-
+import { useState } from 'react'
 
 export default function Navbar({ isLoggedIn = false }) {
   const { user, logout, isAuthenticated } = useAuth()
   const navigate = useNavigate()
 
   const location = useLocation()
+
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const handleLogout = () => {
     logout()
@@ -54,7 +56,21 @@ export default function Navbar({ isLoggedIn = false }) {
           </nav>
         )}
         {/* RIGHT MENU */}
-        <div className='flex items-center gap-3'>
+        <button
+          onClick={() =>
+            setIsMobileMenuOpen(
+              !isMobileMenuOpen
+            )
+          }
+          className='flex flex-col gap-1 md:hidden'
+        >
+          <span className='h-1 w-6 rounded bg-slate-700'></span>
+
+          <span className='h-1 w-6 rounded bg-slate-700'></span>
+
+          <span className='h-1 w-6 rounded bg-slate-700'></span>
+        </button>
+        <div className='hidden items-center gap-3 md:flex'>
           {isAuthenticated ? (
             <>
               <Link
@@ -77,12 +93,12 @@ export default function Navbar({ isLoggedIn = false }) {
               >
                 Profile
               </Link>
-                <button
-                  onClick={handleLogout}
-                  className='rounded-xl bg-red-500 px-4 py-2 font-medium text-white transition hover:bg-red-600'
-                >
-                  Logout
-                </button>
+              <button
+                onClick={handleLogout}
+                className='rounded-xl bg-red-500 px-4 py-2 font-medium text-white transition hover:bg-red-600'
+              >
+                Logout
+              </button>
             </>
           ) : (
             <>
@@ -103,6 +119,111 @@ export default function Navbar({ isLoggedIn = false }) {
           )}
         </div>
       </div>
+      {/* MOBILE MENU */}
+        {isMobileMenuOpen && (
+          <div className='border-t border-slate-200 bg-white px-6 py-6 shadow-md md:hidden'>
+            <div className='flex flex-col gap-5'>
+              {/* DISCOVERY MENU */}
+              {isDiscoveryPage && (
+                <>
+                  <a
+                    href='#kategori'
+                    className='font-medium text-slate-700'
+                    onClick={() =>
+                      setIsMobileMenuOpen(false)
+                    }
+                  >
+                    Kategori
+                  </a>
+
+                  <a
+                    href='#wisata'
+                    className='font-medium text-slate-700'
+                    onClick={() =>
+                      setIsMobileMenuOpen(false)
+                    }
+                  >
+                    Wisata Populer
+                  </a>
+
+                  <Link
+                    to='/about'
+                    className='font-medium text-slate-700'
+                    onClick={() =>
+                      setIsMobileMenuOpen(false)
+                    }
+                  >
+                    Tentang Kami
+                  </Link>
+                </>
+              )}
+
+              {/* AUTH */}
+              {isAuthenticated ? (
+                <>
+                  <Link
+                    to='/my-tickets'
+                    className='font-medium text-slate-700'
+                    onClick={() =>
+                      setIsMobileMenuOpen(false)
+                    }
+                  >
+                    Tiket Saya
+                  </Link>
+
+                  <Link
+                    to='/history'
+                    className='font-medium text-slate-700'
+                    onClick={() =>
+                      setIsMobileMenuOpen(false)
+                    }
+                  >
+                    Riwayat Wisata
+                  </Link>
+
+                  <Link
+                    to='/profile'
+                    className='font-medium text-slate-700'
+                    onClick={() =>
+                      setIsMobileMenuOpen(false)
+                    }
+                  >
+                    Profile
+                  </Link>
+
+                  <button
+                    onClick={handleLogout}
+                    className='rounded-xl bg-red-500 px-4 py-3 font-medium text-white'
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to='/login'
+                    className='font-medium text-slate-700'
+                    onClick={() =>
+                      setIsMobileMenuOpen(false)
+                    }
+                  >
+                    Login
+                  </Link>
+
+                  <Link
+                    to='/register'
+                    className='rounded-xl bg-emerald-600 px-4 py-3 text-center font-medium text-white'
+                    onClick={() =>
+                      setIsMobileMenuOpen(false)
+                    }
+                  >
+                    Register
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+        )}
     </header>
   )
 }

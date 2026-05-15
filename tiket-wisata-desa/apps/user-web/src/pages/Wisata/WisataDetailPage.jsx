@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom'
 
 import Navbar from '../../components/navbar/Navbar'
-import BookingModal from '../../components/models/BookingModal'
+import BookingModal from '../../components/modals/BookingModal'
 import { getWisataDetail } from '../../services/wisataService'
 
 export default function WisataDetailPage() {

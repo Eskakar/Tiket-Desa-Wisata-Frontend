@@ -13,6 +13,9 @@ import HomePage from '../pages/Home/HomePage'
 import WisataDetailPage from '../pages/Wisata/WisataDetailPage'
 import ProfilePage from '../pages/Profile/ProfilePage'
 import AboutPage from '../pages/About/AboutPage'
+import PaymentPage from '../pages/payment/PaymentPage'
+import MyTicketsPage from '../pages/Ticket/MyTicketsPage'
+import HistoryPage from '../pages/History/HistoryPage'
 import ProtectedRoute from './ProtectedRoute'
 
 export default function AppRoutes() {
@@ -61,6 +64,32 @@ export default function AppRoutes() {
           element={
             <ProtectedRoute>
               <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path='/payments/:bookingId'
+          element={
+            <ProtectedRoute>
+              <PaymentPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path='/my-tickets'
+          element={
+            <ProtectedRoute>
+              <MyTicketsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/history'
+          element={
+            <ProtectedRoute>
+              <HistoryPage />
             </ProtectedRoute>
           }
         />
