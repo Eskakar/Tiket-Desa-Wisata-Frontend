@@ -1,0 +1,33 @@
+steps:
+  # Step 1: Menggunakan Node v22 agar kompatibel dengan pnpm terbaru
+  - name: "node:22"
+    dir: "tiket-wisata-desa"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        npm install -g pnpm
+        
+        # Buat file .env di dalam folder aplikasi
+        echo "VITE_API_URL=${_VITE_API_URL}" > apps/admin-web/.env.production
+
+        # Jalankan install di root monorepo
+        pnpm install
+
+        # Jalankan build khusus untuk admin-web
+        pnpm --filter admin-web build
+
+  # Step 2: Deploy ke App Engine
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    dir: "tiket-wisata-desa/apps/admin-web"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        gcloud config set app/cloud_build_timeout 1600
+        gcloud app deploy app.yaml --quiet
+
+timeout: "1600s"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
