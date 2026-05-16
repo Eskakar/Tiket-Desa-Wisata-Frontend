@@ -1,17 +1,22 @@
 steps:
+  # Step 1: Install & Build dari root monorepo menggunakan pnpm workspace filter
   - name: "node:20"
-    dir: "apps/user-web"
     entrypoint: "bash"
     args:
       - "-c"
       - |
         npm install -g pnpm
+        
+        # Buat file .env langsung di target aplikasi
+        echo "VITE_API_URL=${_VITE_API_URL}" > apps/user-web/.env.production
 
-        echo "VITE_API_URL=${_VITE_API_URL}" > .env.production
-
+        # Install semua dependency (termasuk workspace dependencies jika ada)
         pnpm install
-        pnpm build
 
+        # Jalankan build hanya untuk aplikasi user-web
+        pnpm --filter user-web build
+
+  # Step 2: Deploy ke App Engine (tetap arahkan dir ke apps/user-web)
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     dir: "apps/user-web"
     entrypoint: "bash"
