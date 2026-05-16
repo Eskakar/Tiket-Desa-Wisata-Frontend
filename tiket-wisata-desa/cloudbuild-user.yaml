@@ -1,6 +1,6 @@
 steps:
   # Step 1: Masuk ke folder root monorepo (tiket-wisata-desa)
-  - name: "node:20"
+  - name: "node:22"
     dir: "tiket-wisata-desa"
     entrypoint: "bash"
     args:
