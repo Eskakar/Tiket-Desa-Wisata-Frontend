@@ -29,6 +29,12 @@ export const adminService = {
     return response.data;
   },
 
+  getWisataById: async (id) => {
+    // Asumsi: Backend si B mendukung pencarian by ID untuk admin
+    const response = await axiosClient.get(`/wisata/${id}`);
+    return response.data;
+  },
+
   // --- MANAGE SCHEDULE ---
   createSchedule: async (scheduleData) => {
     const response = await axiosClient.post('/admin/schedules', scheduleData);

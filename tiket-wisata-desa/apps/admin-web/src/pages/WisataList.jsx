@@ -9,9 +9,12 @@ export default function WisataList() {
   const fetchWisata = async () => {
     try {
       setLoading(true);
-      const data = await adminService.getAllWisata(1);
-      // Sesuaikan dengan struktur response API aktual (misal: data.data atau data.results)
-      setWisata(data); 
+      const response = await adminService.getAllWisata(1);
+      
+      // Amankan pembacaan data: cek apakah response langsung berupa array, 
+      // atau ada di dalam property 'data' (standar response API pada umumnya)
+      const dataArray = Array.isArray(response) ? response : response.data || response.wisata || [];
+      setWisata(dataArray); 
     } catch (error) {
       console.error('Gagal mengambil data wisata:', error);
     } finally {
@@ -36,38 +39,50 @@ export default function WisataList() {
     }
   };
 
-  if (loading) return <div>Loading data wisata...</div>;
+  if (loading) return <div className="p-8 text-center text-gray-500">Loading data wisata...</div>;
 
   return (
-    <div>
-      <h2>Manajemen Wisata</h2>
-      <Link to="/admin/wisata/create">
-        <button>+ Tambah Wisata</button>
-      </Link>
+    <div className="bg-white p-6 rounded-lg shadow-sm">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-800">Manajemen Wisata</h2>
+        <Link to="/admin/wisata/create">
+          <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded transition">
+            + Tambah Wisata
+          </button>
+        </Link>
+      </div>
       
-      <table border="1" style={{ width: '100%', marginTop: '20px', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr>
-            <th>Nama</th>
-            <th>Lokasi</th>
-            <th>Harga Tiket</th>
-            <th>Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          {wisata.map((item) => (
-            <tr key={item.id}>
-              <td>{item.name}</td>
-              <td>{item.location}</td>
-              <td>Rp {item.ticketPrice}</td>
-              <td>
-                <Link to={`/admin/wisata/edit/${item.id}`}>Edit</Link> | 
-                <button onClick={() => handleDelete(item.id)}>Hapus</button>
-              </td>
+      <div className="overflow-x-auto">
+        <table className="w-full text-left text-sm text-gray-600">
+          <thead className="bg-gray-50 border-b border-gray-200 uppercase text-gray-700">
+            <tr>
+              <th className="px-4 py-3">Nama</th>
+              <th className="px-4 py-3">Lokasi</th>
+              <th className="px-4 py-3">Harga Tiket</th>
+              <th className="px-4 py-3 text-center">Aksi</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {wisata.length === 0 ? (
+              <tr>
+                <td colSpan="4" className="text-center py-4">Belum ada data wisata.</td>
+              </tr>
+            ) : (
+              wisata.map((item) => (
+                <tr key={item.id} className="border-b border-gray-100 hover:bg-gray-50">
+                  <td className="px-4 py-3 font-medium text-gray-800">{item.name}</td>
+                  <td className="px-4 py-3">{item.location}</td>
+                  <td className="px-4 py-3">Rp {item.ticketPrice?.toLocaleString('id-ID')}</td>
+                  <td className="px-4 py-3 flex justify-center gap-4">
+                    <Link to={`/admin/wisata/edit/${item.id}`} className="text-blue-500 hover:text-blue-700 font-medium">Edit</Link>
+                    <button onClick={() => handleDelete(item.id)} className="text-red-500 hover:text-red-700 font-medium">Hapus</button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
