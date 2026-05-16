@@ -1,5 +1,5 @@
 steps:
-  # Step 1: Masuk ke folder root monorepo (tiket-wisata-desa)
+  # Step 1: Menggunakan Node v22 agar kompatibel dengan pnpm terbaru
   - name: "node:22"
     dir: "tiket-wisata-desa"
     entrypoint: "bash"
@@ -11,13 +11,13 @@ steps:
         # Buat file .env di dalam folder aplikasi
         echo "VITE_API_URL=${_VITE_API_URL}" > apps/user-web/.env.production
 
-        # Jalankan install di root monorepo yang sebenarnya
+        # Jalankan install di root monorepo
         pnpm install
 
         # Jalankan build khusus untuk user-web
         pnpm --filter user-web build
 
-  # Step 2: Deploy ke App Engine (jalur disesuaikan dengan sub-folder)
+  # Step 2: Deploy ke App Engine
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     dir: "tiket-wisata-desa/apps/user-web"
     entrypoint: "bash"
