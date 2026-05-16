@@ -1,5 +1,6 @@
 steps:
   - name: "node:20"
+    dir: "apps/user-web"
     entrypoint: "bash"
     args:
       - "-c"
@@ -12,6 +13,7 @@ steps:
         pnpm build
 
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    dir: "apps/user-web"
     entrypoint: "bash"
     args:
       - "-c"
