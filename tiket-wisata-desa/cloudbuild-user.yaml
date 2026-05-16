@@ -1,24 +1,25 @@
 steps:
-  # Step 1: Install & Build dari root monorepo menggunakan pnpm workspace filter
+  # Step 1: Masuk ke folder root monorepo (tiket-wisata-desa)
   - name: "node:20"
+    dir: "tiket-wisata-desa"
     entrypoint: "bash"
     args:
       - "-c"
       - |
         npm install -g pnpm
         
-        # Buat file .env langsung di target aplikasi
+        # Buat file .env di dalam folder aplikasi
         echo "VITE_API_URL=${_VITE_API_URL}" > apps/user-web/.env.production
 
-        # Install semua dependency (termasuk workspace dependencies jika ada)
+        # Jalankan install di root monorepo yang sebenarnya
         pnpm install
 
-        # Jalankan build hanya untuk aplikasi user-web
+        # Jalankan build khusus untuk user-web
         pnpm --filter user-web build
 
-  # Step 2: Deploy ke App Engine (tetap arahkan dir ke apps/user-web)
+  # Step 2: Deploy ke App Engine (jalur disesuaikan dengan sub-folder)
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
-    dir: "apps/user-web"
+    dir: "tiket-wisata-desa/apps/user-web"
     entrypoint: "bash"
     args:
       - "-c"
