@@ -11,9 +11,15 @@ export default function WisataList() {
       setLoading(true);
       const response = await adminService.getAllWisata(1);
       
-      // Amankan pembacaan data: cek apakah response langsung berupa array, 
-      // atau ada di dalam property 'data' (standar response API pada umumnya)
-      const dataArray = Array.isArray(response) ? response : response.data || response.wisata || [];
+      // Amankan pembacaan data: Tembak langsung ke response.data.items sesuai struktur Golang
+      let dataArray = [];
+      if (response && response.data && Array.isArray(response.data.items)) {
+        dataArray = response.data.items;
+      } else if (Array.isArray(response)) {
+        // Fallback jika suatu saat response langsung berupa array
+        dataArray = response; 
+      }
+      
       setWisata(dataArray); 
     } catch (error) {
       console.error('Gagal mengambil data wisata:', error);
