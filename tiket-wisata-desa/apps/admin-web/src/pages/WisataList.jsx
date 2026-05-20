@@ -80,8 +80,17 @@ export default function WisataList() {
                   <td className="px-4 py-3">{item.location}</td>
                   <td className="px-4 py-3">Rp {item.ticketPrice?.toLocaleString('id-ID')}</td>
                   <td className="px-4 py-3 flex justify-center gap-4">
-                    <Link to={`/admin/wisata/edit/${item.id}`} className="text-blue-500 hover:text-blue-700 font-medium">Edit</Link>
-                    <button onClick={() => handleDelete(item.id)} className="text-red-500 hover:text-red-700 font-medium">Hapus</button>
+                    <Link to={`/admin/wisata/detail/${item.slug}`} className='text-emerald-600 hover:text-emerald-800 font-medium'>
+                      Detail
+                    </Link>
+                    
+                    <Link to={`/admin/wisata/edit/${item.slug}`} className="text-blue-500 hover:text-blue-700 font-medium">
+                      Edit
+                    </Link>
+                    
+                    <button onClick={() => handleDelete(item.id)} className="text-red-500 hover:text-red-700 font-medium">
+                      Hapus
+                    </button>
                   </td>
                 </tr>
               ))

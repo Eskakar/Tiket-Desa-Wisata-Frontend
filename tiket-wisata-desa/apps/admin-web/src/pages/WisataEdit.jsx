@@ -3,10 +3,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { adminService } from '../api/adminService';
 
 export default function WisataEdit() {
-  const { id } = useParams(); // Mengambil ID dari URL
+  const { slug } = useParams(); // Mengambil slug dari URL
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
+  const [wisataId, setWisataId] = useState(null);
+
   const [formData, setFormData] = useState({
     name: '',
     slug: '',
@@ -24,10 +26,11 @@ export default function WisataEdit() {
   useEffect(() => {
     const fetchDetail = async () => {
       try {
-        const response = await adminService.getWisataById(id);
+        const response = await adminService.getWisataBySlug(slug);
         // Sesuaikan dengan struktur response API si B (misal response.data)
         const data = response.data || response;
         
+        setWisataId(data.id);
         setFormData({
           name: data.name || '',
           slug: data.slug || '',
@@ -50,7 +53,7 @@ export default function WisataEdit() {
     };
 
     fetchDetail();
-  }, [id, navigate]);
+  }, [slug, navigate]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -71,7 +74,7 @@ export default function WisataEdit() {
       };
       
       // Memanggil endpoint PUT /admin/wisata/:id
-      await adminService.updateWisata(id, payload);
+      await adminService.updateWisata(wisataId, payload);
       alert('Wisata berhasil diperbarui!');
       navigate('/admin/wisata');
     } catch (error) {

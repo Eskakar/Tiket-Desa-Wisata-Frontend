@@ -7,6 +7,7 @@ import Login from '../pages/Login';
 import WisataList from '../pages/WisataList';
 import WisataForm from '../pages/WisataForm';
 import WisataEdit from '../pages/WisataEdit';
+import WisataDetail from '../pages/WisataDetail';
 import BookingVerif from '../pages/BookingVerif';
 import ScheduleManage from '../pages/ScheduleManage';
 import ScanTicket from '../pages/ScanTicket';
@@ -31,7 +32,8 @@ export default function AppRoutes() {
         
         <Route path="wisata" element={<WisataList />} />
         <Route path="wisata/create" element={<WisataForm />} />
-        <Route path="wisata/edit/:id" element={<WisataEdit />} />
+        <Route path="wisata/edit/:slug" element={<WisataEdit />} />
+        <Route path="wisata/detail/:slug" element={<WisataDetail />} />
         <Route path="bookings" element={<BookingVerif />} />
         <Route path="schedules" element={<ScheduleManage />} />
         <Route path="scan" element={<ScanTicket />} />

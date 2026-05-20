@@ -29,9 +29,9 @@ export const adminService = {
     return response.data;
   },
 
-  getWisataById: async (id) => {
-    // Asumsi: Backend si B mendukung pencarian by ID untuk admin
-    const response = await axiosClient.get(`/wisata/${id}`);
+  getWisataBySlug: async (slug) => {
+    // Asumsi: Backend si B mendukung pencarian by slug untuk admin
+    const response = await axiosClient.get(`/wisata/${slug}`);
     return response.data;
   },
 
