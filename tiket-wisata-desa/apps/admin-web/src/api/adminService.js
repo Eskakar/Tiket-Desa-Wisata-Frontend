@@ -57,5 +57,11 @@ export const adminService = {
   scanTicket: async (qrCode) => {
     const response = await axiosClient.post('/admin/bookings/scan', { qrCode });
     return response.data;
+  },
+  
+  // --- MANAGE TAGS ---
+  getTags: async () => {
+    const response = await axiosClient.get('/tags');
+    return response.data;
   }
 };

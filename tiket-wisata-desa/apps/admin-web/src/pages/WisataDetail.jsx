@@ -65,6 +65,7 @@ export default function WisataDetail() {
             <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Kapasitas Harian</h3>
             <p className="text-gray-800 text-lg">{wisata.capacity} Orang</p>
           </div>
+          
           <div className="flex gap-4 pt-2">
             <span className={`px-3 py-1 rounded-full text-sm font-medium ${wisata.isKidsFree ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
               Anak Gratis: {wisata.isKidsFree ? 'Ya' : 'Tidak'}
@@ -73,6 +74,21 @@ export default function WisataDetail() {
               Ramah Disabilitas: {wisata.isDisabilityFriendly ? 'Ya' : 'Tidak'}
             </span>
           </div>
+
+          {/* Menampilkan Daftar Tag dari Backend */}
+          {wisata.tags && wisata.tags.length > 0 && (
+            <div className="pt-4 border-t border-gray-100 mt-2">
+              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Kategori / Tag</h3>
+              <div className="flex flex-wrap gap-2">
+                {wisata.tags.map(tag => (
+                  <span key={tag.id} className="px-3 py-1 bg-indigo-50 text-indigo-600 border border-indigo-200 rounded-full text-sm font-medium capitalize">
+                    {tag.name.replace('-', ' ')}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
         </div>
       </div>
 

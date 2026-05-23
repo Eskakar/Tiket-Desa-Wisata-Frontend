@@ -15,7 +15,12 @@ export default function ScheduleManage() {
     const fetchWisata = async () => {
       try {
         const response = await adminService.getAllWisata(1);
-        const dataArray = Array.isArray(response) ? response : response.data || response.wisata || [];
+        let dataArray = [];
+        if (response && response.data && Array.isArray(response.data.items)) {
+          dataArray = response.data.items;
+        } else if (Array.isArray(response)) {
+          dataArray = response;
+        }
         setWisataList(dataArray);
       } catch (error) {
         console.error('Gagal mengambil data wisata:', error);
