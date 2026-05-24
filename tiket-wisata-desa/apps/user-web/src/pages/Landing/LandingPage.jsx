@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Form, Link, useNavigate } from 'react-router-dom'
+
 import Navbar from '../../components/navbar/Navbar'
 import WisataCard from '../../components/cards/WisataCard'
 import CategoryCard from '../../components/cards/CategoryCard'
@@ -7,17 +8,37 @@ import CategoryCard from '../../components/cards/CategoryCard'
 import { getFeaturedWisata } from '../../services/wisataService'
 
 export default function LandingPage() {
+  const navigate = useNavigate()
   const categories = [
-    'Wisata Air',
-    'Wisata Sungai',
-    'Wisata Alam',
-    'Wisata Budaya',
-    'Wisata Kuliner',
-    'Wisata Keluarga',
+    {
+      label: 'Wisata Air',
+      slug: 'wisata-air',
+    },
+    {
+      label: 'Wisata Sungai',
+      slug: 'wisata-sungai',
+    },
+    {
+      label: 'Wisata Alam',
+      slug: 'wisata-alam',
+    },
+    {
+      label: 'Wisata Budaya',
+      slug: 'wisata-budaya',
+    },
+    {
+      label: 'Wisata Kuliner',
+      slug: 'wisata-kuliner',
+    },
+    {
+      label: 'Wisata Keluarga',
+      slug: 'wisata-keluarga',
+    },
   ]
 
   const [wisataList, setWisataList] = useState([])
   const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState('')
 
   // sementara simulasi auth
   const isLoggedIn = false
@@ -38,6 +59,20 @@ export default function LandingPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+
+    if (!search.trim()) return
+
+    navigate(
+      `/wisata/search?q=${search}`
+    )
+  }
+
+  const handleCategoryClick = (slug) => {
+    navigate(`/wisata/tag/${slug}`)
   }
 
   return (
@@ -117,18 +152,24 @@ export default function LandingPage() {
               Cari wisata berdasarkan nama desa, lokasi, atau kategori.
             </p>
           </div>
-
-          <div className='mx-auto flex max-w-3xl flex-col gap-4 md:flex-row'>
+          <form
+            onSubmit={handleSearch}
+            className='mx-auto flex max-w-3xl flex-col gap-4 md:flex-row'
+          >
             <input
               type='text'
               placeholder='Cari wisata seperti Jogokaryan, wisata sungai, wisata alam...'
               className='flex-1 rounded-2xl border border-slate-200 px-5 py-4 outline-none transition focus:border-emerald-500'
+              value={search}
+              onChange={(e) =>
+                setSearch(e.target.value)
+              }
             />
 
             <button className='rounded-2xl bg-emerald-600 px-7 py-4 font-semibold text-white transition hover:bg-emerald-700'>
               Cari
             </button>
-          </div>
+          </form>  
         </div>
       </section>
 
@@ -147,8 +188,13 @@ export default function LandingPage() {
         <div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6'>
           {categories.map((category) => (
             <CategoryCard
-              key={category}
-              category={category}
+              key={category.slug}
+              category={category.label}
+              onClick={() =>
+                handleCategoryClick(
+                  category.slug
+                )
+              }
             />
           ))}
         </div>

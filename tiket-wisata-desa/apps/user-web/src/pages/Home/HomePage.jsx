@@ -139,11 +139,11 @@ export default function HomePage() {
             <CategoryCard
               key={category.slug}
               category={category.label}
-              onClick={() =>
+              onClick={() => {
                 handleCategoryClick(
                   category.slug
                 )
-              }
+              }}
             />
           ))}
         </div>

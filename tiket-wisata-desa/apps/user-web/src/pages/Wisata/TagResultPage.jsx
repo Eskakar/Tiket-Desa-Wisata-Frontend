@@ -34,11 +34,15 @@ export default function TagResultPage() {
     fetchWisataByTag()
   }, [tag, currentPage])
 
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [tag])
+
   const fetchWisataByTag =
     async () => {
       try {
         setLoading(true)
-
+        console.log(tag)
         const response =
           await getWisataByTag(
             tag,
@@ -50,8 +54,9 @@ export default function TagResultPage() {
         )
 
         setTotalPages(
-          response.data.totalPages || 1
+          response.data.totalPages || 0
         )
+        console.log(response.data)
       } catch (error) {
         console.error(error)
       } finally {
@@ -148,6 +153,7 @@ export default function TagResultPage() {
 
               <button
                 disabled={
+                  totalPages === 0 ||
                   currentPage === totalPages
                 }
                 onClick={() =>

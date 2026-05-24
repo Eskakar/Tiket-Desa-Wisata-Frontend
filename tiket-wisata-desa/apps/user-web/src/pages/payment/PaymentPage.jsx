@@ -7,7 +7,7 @@ import {
 
 import Navbar from '../../components/navbar/Navbar'
 
-import { uploadPaymentProof } from '../../services/paymentService'
+import { uploadPaymentProof , uploadFile} from '../../services/paymentService'
 
 export default function PaymentPage() {
   const navigate = useNavigate()
@@ -20,6 +20,12 @@ export default function PaymentPage() {
   const [paymentProof, setPaymentProof] =
     useState('')
 
+  const [selectedFile, setSelectedFile] =
+  useState(null)
+
+  const [preview, setPreview] =
+    useState('')
+
   const [loading, setLoading] =
     useState(false)
 
@@ -29,10 +35,18 @@ export default function PaymentPage() {
     try {
       setLoading(true)
 
+      // upload image dulu
+      const uploadResponse =
+        await uploadFile(selectedFile)
+
+      const imageUrl =
+        uploadResponse.data.url
+
+      // payment request
       const payload = {
         bookingId: Number(bookingId),
         paymentMethod,
-        paymentProof,
+        paymentProof: imageUrl,
       }
 
       const response =
@@ -140,32 +154,40 @@ export default function PaymentPage() {
               {/* PAYMENT PROOF */}
               <div className='mt-8'>
                 <label className='mb-2 block text-sm font-medium text-slate-500'>
-                  Bukti Pembayaran
+                  Upload Bukti Pembayaran
                 </label>
 
                 <input
-                  type='text'
-                  placeholder='Masukkan URL bukti pembayaran'
-                  value={paymentProof}
-                  onChange={(e) =>
-                    setPaymentProof(
-                      e.target.value
-                    )
-                  }
-                  className='w-full rounded-2xl border border-slate-200 px-5 py-4 outline-none transition focus:border-emerald-500'
+                  type='file'
+                  accept='image/*'
+                  onChange={(e) => {
+                    const file = e.target.files[0]
+
+                    setSelectedFile(file)
+
+                    if (file) {
+                      setPreview(
+                        URL.createObjectURL(file)
+                      )
+                    }
+                  }}
+                  className='w-full rounded-2xl border border-slate-200 px-5 py-4'
                 />
 
-                <p className='mt-3 text-sm text-slate-400'>
-                  Untuk MVP gunakan image URL
-                  atau link gambar.
-                </p>
+                {preview && (
+                  <img
+                    src={preview}
+                    alt='Preview'
+                    className='mt-5 h-52 w-full rounded-2xl object-cover'
+                  />
+                )}
               </div>
 
               {/* BUTTON */}
               <button
                 type='submit'
                 disabled={
-                  loading || !paymentProof
+                  loading || !selectedFile
                 }
                 className='mt-10 w-full rounded-2xl bg-emerald-600 py-4 font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-50'
               >

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-
+import { useNavigate } from 'react-router-dom'
 import { createBooking } from '../../services/bookingService'
 
 export default function BookingModal({
@@ -7,6 +7,8 @@ export default function BookingModal({
   isOpen,
   onClose,
 }) {
+  const navigate = useNavigate()
+
   const [totalTicket, setTotalTicket] =
     useState(1)
 
@@ -28,9 +30,6 @@ export default function BookingModal({
       const payload = {
         wisataId: wisata.id,
 
-        // sementara MVP hardcoded
-        scheduleId: 1,
-
         totalTicket,
       }
 
@@ -41,7 +40,7 @@ export default function BookingModal({
         response.message ||
           'Booking berhasil'
       )
-
+      console.log(response.data.bookingId)
       onClose()
       navigate(
         `/payments/${response.data.bookingId}`
@@ -154,7 +153,7 @@ export default function BookingModal({
         {/* BUTTON */}
         <button
           disabled={
-            loading || !visitDate
+            loading || !visitDate || wisata.capacity <= 0
           }
           onClick={handleBooking}
           className='mt-8 w-full rounded-2xl bg-emerald-600 py-4 font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-50'
