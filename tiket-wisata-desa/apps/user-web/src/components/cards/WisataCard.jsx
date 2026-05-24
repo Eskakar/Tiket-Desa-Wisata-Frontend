@@ -14,9 +14,6 @@ export default function WisataCard({ wisata }) {
       <div className='p-5'>
         {/* HEADER */}
         <div className='mb-4 flex items-center justify-between'>
-          <span className='rounded-full bg-emerald-100 px-3 py-1 text-sm font-medium text-emerald-700'>
-            Wisata Desa
-          </span>
 
           <span className='text-sm font-semibold text-yellow-500'>
             ⭐ {wisata.rating || 0}
@@ -27,6 +24,19 @@ export default function WisataCard({ wisata }) {
         <h3 className='mb-2 text-2xl font-bold text-slate-800'>
           {wisata.name}
         </h3>
+        {/* TAGS */}
+        <div className='mt-3 flex flex-wrap gap-2 mb-2'>
+          {wisata?.tags
+            ?.slice(0, 2)
+            .map((tag) => (
+              <span
+                key={tag.id}
+                className='rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-700'
+              >
+                # {tag.name.replaceAll('-', ' ')}
+              </span>
+            ))}
+        </div>
 
         {/* LOCATION */}
         <p className='mb-5 text-slate-500'>
