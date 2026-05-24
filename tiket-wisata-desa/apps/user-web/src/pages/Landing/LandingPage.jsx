@@ -148,9 +148,7 @@ export default function LandingPage() {
               Cari Wisata Favoritmu
             </h2>
 
-            <p className='text-slate-500'>
-              Cari wisata berdasarkan nama desa, lokasi, atau kategori.
-            </p>
+
           </div>
           <form
             onSubmit={handleSearch}
@@ -158,7 +156,7 @@ export default function LandingPage() {
           >
             <input
               type='text'
-              placeholder='Cari wisata seperti Jogokaryan, wisata sungai, wisata alam...'
+              placeholder='Cari Desa Wisata Anda.....'
               className='flex-1 rounded-2xl border border-slate-200 px-5 py-4 outline-none transition focus:border-emerald-500'
               value={search}
               onChange={(e) =>

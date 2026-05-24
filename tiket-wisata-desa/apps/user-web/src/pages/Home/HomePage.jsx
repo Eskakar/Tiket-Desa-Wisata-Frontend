@@ -106,7 +106,7 @@ export default function HomePage() {
           >
             <input
               type='text'
-              placeholder='Cari wisata seperti curug, sungai, budaya...'
+              placeholder='Cari Desa wisata Anda...'
               value={search}
               onChange={(e) =>
                 setSearch(e.target.value)
