@@ -23,9 +23,6 @@ export default function Layout() {
           <Link to="/admin/bookings" className="block px-4 py-2 rounded hover:bg-slate-700 transition">
             Verifikasi Booking
           </Link>
-          <Link to="/admin/schedules" className="block px-4 py-2 rounded hover:bg-slate-700 transition">
-            Jadwal & Kuota
-          </Link>
           <Link to="/admin/scan" className="block px-4 py-2 rounded hover:bg-slate-700 transition font-medium text-blue-300">
             Scan Tiket
           </Link>

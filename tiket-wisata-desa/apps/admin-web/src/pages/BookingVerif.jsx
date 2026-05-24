@@ -8,10 +8,9 @@ export default function BookingVerif() {
   const fetchBookings = async () => {
     try {
       setLoading(true);
-      // Mengambil booking yang statusnya sedang menunggu verifikasi
-      const response = await adminService.getBookingsByStatus('WAITING_VERIFICATION');
+      // PERBAIKAN 1: Ubah status menjadi 'PENDING' sesuai dengan JSON backend si B
+      const response = await adminService.getBookingsByStatus('PENDING');
       
-      // Amankan struktur data, sesuaikan dengan response Golang si B
       const dataArray = Array.isArray(response) ? response : response.data || [];
       setBookings(dataArray);
     } catch (error) {
@@ -30,7 +29,7 @@ export default function BookingVerif() {
       try {
         await adminService.verifyBooking(id);
         alert('Booking berhasil disetujui!');
-        fetchBookings(); // Refresh data setelah aksi
+        fetchBookings(); 
       } catch (error) {
         console.error('Gagal menyetujui booking:', error);
         alert('Terjadi kesalahan saat memverifikasi.');
@@ -43,7 +42,7 @@ export default function BookingVerif() {
       try {
         await adminService.rejectBooking(id);
         alert('Booking berhasil ditolak!');
-        fetchBookings(); // Refresh data
+        fetchBookings(); 
       } catch (error) {
         console.error('Gagal menolak booking:', error);
         alert('Terjadi kesalahan saat menolak.');
@@ -78,10 +77,14 @@ export default function BookingVerif() {
               </tr>
             ) : (
               bookings.map((item) => (
-                <tr key={item.id} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium text-gray-800">#{item.id}</td>
-                  <td className="px-4 py-3">{item.customerName || 'N/A'}</td>
-                  <td className="px-4 py-3">{item.wisataName || 'N/A'}</td>
+                <tr key={item.bookingId || item.id} className="border-b border-gray-100 hover:bg-gray-50">
+                  {/* Menggunakan item.bookingCode jika ada, atau fallback ke ID */}
+                  <td className="px-4 py-3 font-medium text-gray-800">{item.bookingCode || `#${item.bookingId}`}</td>
+                  
+                  {/* PERBAIKAN 2: Menggunakan item.user.name dan item.wisata.name */}
+                  <td className="px-4 py-3 capitalize">{item.user?.name || 'N/A'}</td>
+                  <td className="px-4 py-3">{item.wisata?.name || 'N/A'}</td>
+                  
                   <td className="px-4 py-3">{item.totalTicket} Tiket</td>
                   <td className="px-4 py-3">
                     {item.paymentProof ? (
@@ -89,25 +92,25 @@ export default function BookingVerif() {
                         href={item.paymentProof} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-blue-500 hover:underline"
+                        className="text-blue-600 hover:underline font-medium"
                       >
                         Lihat Bukti
                       </a>
                     ) : (
-                      <span className="text-red-400 italic">Belum Upload</span>
+                      <span className="text-gray-400 italic">Belum Upload</span>
                     )}
                   </td>
                   <td className="px-4 py-3 flex justify-center gap-3">
                     <button 
-                      onClick={() => handleApprove(item.id)}
+                      onClick={() => handleApprove(item.bookingId || item.id)}
                       disabled={!item.paymentProof}
-                      className="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded transition disabled:bg-gray-300 disabled:cursor-not-allowed"
+                      className="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded transition disabled:bg-gray-300 disabled:cursor-not-allowed font-medium"
                     >
                       Terima
                     </button>
                     <button 
-                      onClick={() => handleReject(item.id)}
-                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded transition"
+                      onClick={() => handleReject(item.bookingId || item.id)}
+                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded transition font-medium"
                     >
                       Tolak
                     </button>
