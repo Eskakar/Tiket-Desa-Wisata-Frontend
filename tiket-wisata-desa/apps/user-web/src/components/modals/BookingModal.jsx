@@ -80,21 +80,6 @@ export default function BookingModal({
           </button>
         </div>
 
-        {/* DATE */}
-        <div className='mt-8'>
-          <label className='mb-2 block text-sm font-medium text-slate-500'>
-            Tanggal Kunjungan
-          </label>
-
-          <input
-            type='date'
-            value={visitDate}
-            onChange={(e) =>
-              setVisitDate(e.target.value)
-            }
-            className='w-full rounded-2xl border border-slate-200 px-5 py-4 outline-none transition focus:border-emerald-500'
-          />
-        </div>
 
         {/* TICKET */}
         <div className='mt-8'>
@@ -153,7 +138,7 @@ export default function BookingModal({
         {/* BUTTON */}
         <button
           disabled={
-            loading || !visitDate || wisata.capacity <= 0
+            loading || wisata.capacity <= 0
           }
           onClick={handleBooking}
           className='mt-8 w-full rounded-2xl bg-emerald-600 py-4 font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-50'

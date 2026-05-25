@@ -1,4 +1,5 @@
 import StatusBadge from '../ui/StatusBadge'
+import {QRCode} from 'react-qr-code'
 
 export default function TicketCard({
   ticket,
@@ -36,11 +37,11 @@ export default function TicketCard({
           </div>
 
           <div className='flex items-center justify-between'>
-            <span>Tanggal Kunjungan</span>
+            <span>Berlaku Sampai</span>
 
             <span className='font-semibold text-slate-800'>
               {new Date(
-                ticket.visitDate
+                ticket.validUntil
               ).toLocaleDateString(
                 'id-ID',
                 {
@@ -67,8 +68,13 @@ export default function TicketCard({
             QR Code Tiket
           </p>
 
-          <div className='mx-auto flex h-32 w-32 items-center justify-center rounded-2xl bg-white font-bold text-slate-400 shadow-inner'>
-            {ticket.qrCode}
+          <div className='flex justify-center'>
+            <div className='w-fit rounded-2xl bg-white p-4 shadow-inner'>
+              <QRCode
+                value={ticket.qrCode}
+                size={140}
+              />
+            </div>
           </div>
         </div>
       </div>
