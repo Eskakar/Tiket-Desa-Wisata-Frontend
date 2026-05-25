@@ -1,11 +1,26 @@
 import StatusBadge from '../ui/StatusBadge'
 import {QRCode} from 'react-qr-code'
+import { useNavigate } from 'react-router-dom'
 
 export default function TicketCard({
   ticket,
 }) {
+  const navigate = useNavigate()
   return (
-    <div className='overflow-hidden rounded-[2rem] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg'>
+    <div
+      onClick={() => {
+        if (ticket.status === 'PENDING') {
+          navigate(
+            `/payments/${ticket.bookingId}`
+          )
+        }
+      }}
+      className={`overflow-hidden rounded-[2rem] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${
+        ticket.status === 'PENDING'
+          ? 'cursor-pointer ring-2 ring-yellow-200'
+          : ''
+      }`}
+    >
       {/* IMAGE */}
       <div className='relative h-56 overflow-hidden'>
         <img
@@ -63,20 +78,26 @@ export default function TicketCard({
         </div>
 
         {/* QR */}
-        <div className='mt-8 rounded-2xl bg-slate-100 p-5 text-center'>
-          <p className='mb-3 text-sm text-slate-500'>
-            QR Code Tiket
-          </p>
+        {ticket.status !== 'PENDING' && (
+          <div className='mt-8 rounded-2xl bg-slate-100 p-5 text-center'>
+            <p className='mb-4 text-sm text-slate-500'>
+              QR Code Tiket
+            </p>
 
-          <div className='flex justify-center'>
-            <div className='w-fit rounded-2xl bg-white p-4 shadow-inner'>
-              <QRCode
-                value={ticket.qrCode}
-                size={140}
-              />
+            <div className='flex justify-center'>
+              <div className='w-fit rounded-2xl bg-white p-4 shadow-inner'>
+                <QRCode
+                  value={ticket.qrCode}
+                  size={140}
+                />
+              </div>
             </div>
+
+            <p className='mt-4 text-xs text-slate-500'>
+              {ticket.bookingCode}
+            </p>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )
