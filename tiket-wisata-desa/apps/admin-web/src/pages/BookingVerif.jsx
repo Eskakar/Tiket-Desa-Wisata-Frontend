@@ -9,7 +9,7 @@ export default function BookingVerif() {
     try {
       setLoading(true);
       // PERBAIKAN 1: Ubah status menjadi 'PENDING' sesuai dengan JSON backend si B
-      const response = await adminService.getBookingsByStatus('PENDING');
+      const response = await adminService.getBookingsByStatus('WAITING_VERIFICATION');
       
       const dataArray = Array.isArray(response) ? response : response.data || [];
       setBookings(dataArray);
